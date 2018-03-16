@@ -145,6 +145,6 @@ while correct_answers != len(hangman_list) and wrong_answers < 7:
     print(" ".join(answer))
 print()
 if correct_answers == len(hangman_list):
-    print("CONGRATZ, you didn't catch anything.")
+    print("CONGRATZ, you saved the fish.")
 else:
     print("You are charged with fishslaughter.")
