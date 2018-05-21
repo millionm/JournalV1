@@ -5,7 +5,7 @@ while True:
     enter = raw_input("Enter password: ")
     count += 1
     if count == 3:
-        print "To many attempts."
+        print "Too many attempts."
         raise SystemExit("Exiting...")#exit
     else:
         if enter == "password":
