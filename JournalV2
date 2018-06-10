@@ -1,0 +1,62 @@
+import pickledb
+from termcolor import colored, cprint
+
+cprint('Hello, World!', 'cyan', 'on_red')
+
+db = pickledb.load('journal.db', False)
+password = "password"
+data = {}
+count = 0
+while True:
+    enter = raw_input("Enter password: ")
+    count += 1
+    if count == 3:
+        cprint('Too many attempts.', 'red')
+        raise SystemExit("Exiting...")#exit
+    else:
+        if enter == "password":
+            cprint('Accessing main menu...', 'green')
+            break #they are in, exit loop
+        else:
+            cprint('Password invalid. Try again.', 'yellow')
+
+# Main menu code
+while True:
+    selection = raw_input("What would you like to do? Enter view, create, or end: ")
+    if selection == "end":
+        raise SystemExit("Exiting...")
+    if selection == "view" and "delete":
+        cprint('Ok. please select a date.', 'green')
+        keys = db.getall()
+        for key in keys:
+            cprint( key, 'cyan')
+        while True:
+            view_or_del = raw_input("Which date?: ")
+            if view_or_del in keys:
+                view_entry = db.get(view_or_del)
+                cprint("Title: " + view_entry["title"], 'blue')
+                cprint("Entry: " + view_entry["entry"], 'magenta')
+                break
+            else:
+                cprint('Invalid Action.', 'red')
+        delete_entry = raw_input("Would you like to delete this entry?: ")
+        if delete_entry == "yes":
+            db.rem(view_or_del)
+            db.dump()
+        else:
+            cprint('Ok.', 'green')
+    else:
+        if selection == "create":
+            date = raw_input("Enter a date: ")
+            cprint(date, 'cyan')
+            title = raw_input("Enter a title for your entry: ")
+            cprint(title, 'blue')
+            entry = raw_input("You're ready to go! Enter your entry: ")
+            cprint(entry, 'magenta')
+            db.set(date, {"title" : title, "entry" : entry})
+            db.dump()
+            print_entry = db.get(date)
+            cprint("Title: " + print_entry["title"],'blue')
+            cprint("Entry: " + print_entry["entry"], 'magenta')
+        else:
+            cprint('Action invalid.','red')
